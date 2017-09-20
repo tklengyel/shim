@@ -73,6 +73,10 @@ ifneq ($(origin REQUIRE_TPM), undefined)
 	CFLAGS	+= -DREQUIRE_TPM
 endif
 
+ifneq ($(origin KEEP_DISCARDABLE_RELOC), undefined)
+    CFLAGS  += -DKEEP_DISCARDABLE_RELOC
+endif
+
 ifeq ($(ARCH),x86_64)
 	CFLAGS	+= -mno-mmx -mno-sse -mno-red-zone -nostdinc \
 		   -maccumulate-outgoing-args -m64 \
