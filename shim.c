@@ -1426,7 +1426,11 @@ static EFI_STATUS handle_image (void *data, unsigned int datasize,
 			}
 		}
 
-		if (Section->Characteristics & EFI_IMAGE_SCN_MEM_DISCARDABLE) {
+		if ( (Section->Characteristics & EFI_IMAGE_SCN_MEM_DISCARDABLE)
+#if defined(KEEP_DISCARDABLE_RELOC)
+            && RelocSection != Section
+#endif
+        ) {
 			continue;
 		}
 

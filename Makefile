@@ -68,6 +68,10 @@ ifneq ($(origin ENABLE_HTTPBOOT), undefined)
 	CFLAGS	+= -DENABLE_HTTPBOOT
 endif
 
+ifneq ($(origin KEEP_DISCARDABLE_RELOC), undefined)
+    CFLAGS  += -DKEEP_DISCARDABLE_RELOC
+endif
+
 ifeq ($(ARCH),x86_64)
 	CFLAGS	+= -mno-mmx -mno-sse -mno-red-zone -nostdinc \
 		   -maccumulate-outgoing-args \

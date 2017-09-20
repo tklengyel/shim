@@ -57,5 +57,9 @@ Variables you could set to customize the build:
 - OSLABEL
   This is the label that will be put in BOOT$(EFI_ARCH).CSV for your OS.
   By default this is the same value as EFIDIR .
+- KEEP_DISCARDABLE_RELOC
+  This allows you to decide whether a .reloc section that was marked
+  discardable gets discarded or not. Some efi applications expect it to be
+  present after the shim (ie. Xen). By default it gets discarded.
 
 # vim:filetype=mail:tw=74
