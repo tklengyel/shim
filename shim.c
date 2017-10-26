@@ -1307,8 +1307,10 @@ static EFI_STATUS handle_image (void *data, unsigned int datasize,
 	if (efi_status != EFI_SUCCESS)
 		return efi_status;
 
-	/* Measure the binary into the TPM */
-	tpm_log_pe((EFI_PHYSICAL_ADDRESS)(UINTN)data, datasize, sha1hash, 4);
+	/* Measure thye binary into the TPM */
+	efi_status = tpm_log_pe((EFI_PHYSICAL_ADDRESS)(UINTN)data, datasize, sha1hash, 4);
+	if (efi_status != EFI_SUCCESS)
+		return efi_status;
 
 	if (secure_mode ()) {
 		efi_status = verify_buffer(data, datasize, &context,
@@ -1813,9 +1815,6 @@ EFI_STATUS shim_verify (void *buffer, UINT32 size)
 	loader_is_participating = 1;
 	in_protocol = 1;
 
-	if (!secure_mode())
-		goto done;
-
 	status = read_header(buffer, size, &context);
 	if (status != EFI_SUCCESS)
 		goto done;
@@ -1824,7 +1823,16 @@ EFI_STATUS shim_verify (void *buffer, UINT32 size)
 	if (status != EFI_SUCCESS)
 		goto done;
 
+	/* Measure the binary into the TPM */
+	status = tpm_log_pe((EFI_PHYSICAL_ADDRESS)(UINTN)buffer, size, sha1hash, 4);
+	if (status != EFI_SUCCESS)
+		goto done;
+
+	if (!secure_mode())
+		goto done;
+
 	status = verify_buffer(buffer, size, &context, sha256hash, sha1hash);
+
 done:
 	in_protocol = 0;
 	return status;
