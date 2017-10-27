@@ -193,18 +193,9 @@ static EFI_STATUS tpm_log_event_raw(EFI_PHYSICAL_ADDRESS buf, UINTN size,
 		event->Header.EventType = type;
 		event->Size = sizeof(*event) - sizeof(event->Event) + logsize + 1;
 		CopyMem(event->Event, (VOID *)log, logsize);
-		if (hash) {
-			/* TPM 2 systems will generate the appropriate hash
-			   themselves if we pass PE_COFF_IMAGE
-			*/
-			status = uefi_call_wrapper(tpm2->hash_log_extend_event,
-						   5, tpm2, PE_COFF_IMAGE, buf,
-						   (UINT64) size, event);
-		} else {
-			status = uefi_call_wrapper(tpm2->hash_log_extend_event,
+		status = uefi_call_wrapper(tpm2->hash_log_extend_event,
 						   5, tpm2, 0, buf,
 						   (UINT64) size, event);
-		}
 		FreePool(event);
 		return status;
 	} else if (tpm) {
