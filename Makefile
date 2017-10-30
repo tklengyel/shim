@@ -39,7 +39,6 @@ OBJCOPY_GTE224	= $(shell expr `$(OBJCOPY) --version |grep ^"GNU objcopy" | sed '
 
 SUBDIRS		= $(TOPDIR)/Cryptlib $(TOPDIR)/lib
 
-EFI_INCLUDE	:= /usr/include/efi
 EFI_INCLUDES	= -nostdinc -I$(TOPDIR)/Cryptlib -I$(TOPDIR)/Cryptlib/Include \
 		  -I$(EFI_INCLUDE) -I$(EFI_INCLUDE)/$(ARCH) -I$(EFI_INCLUDE)/protocol \
 		  -I$(TOPDIR)/include -iquote $(TOPDIR) -iquote $(shell pwd)
@@ -112,6 +111,7 @@ endif
 
 FORMAT		?= --target efi-app-$(ARCH)
 EFI_PATH	?= $(LIBDIR)/gnuefi
+EFI_INCLUDE	?= /usr/include/efi
 
 MMSTEM		?= mm$(ARCH_SUFFIX)
 MMNAME		= $(MMSTEM).efi
