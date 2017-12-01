@@ -1838,6 +1838,17 @@ done:
 	return status;
 }
 
+EFI_STATUS shim_measure (void *buffer, UINT32 size, UINT8 pcr)
+{
+	EFI_STATUS status;
+
+	in_protocol = 1;
+	status = tpm_log_event((EFI_PHYSICAL_ADDRESS)(UINTN)buffer, (UINTN)size, pcr, (CHAR8 *)"shim_measure");
+	in_protocol = 0;
+
+	return status;
+}
+
 static EFI_STATUS shim_hash (char *data, int datasize,
 			     PE_COFF_LOADER_IMAGE_CONTEXT *context,
 			     UINT8 *sha256hash, UINT8 *sha1hash)
@@ -2932,6 +2943,7 @@ efi_main (EFI_HANDLE passed_image_handle, EFI_SYSTEM_TABLE *passed_systab)
 	shim_lock_interface.Verify = shim_verify;
 	shim_lock_interface.Hash = shim_hash;
 	shim_lock_interface.Context = shim_read_header;
+    shim_lock_interface.Measure = shim_measure;
 
 	systab = passed_systab;
 	image_handle = global_image_handle = passed_image_handle;
