@@ -19,6 +19,14 @@ EFI_STATUS
 
 typedef
 EFI_STATUS
+(*EFI_SHIM_LOCK_MEASURE) (
+	IN VOID *buffer,
+	IN UINT32 size,
+    IN UINT8 pcr
+	);
+
+typedef
+EFI_STATUS
 (*EFI_SHIM_LOCK_HASH) (
 	IN char *data,
 	IN int datasize,
@@ -39,6 +47,7 @@ typedef struct _SHIM_LOCK {
 	EFI_SHIM_LOCK_VERIFY Verify;
 	EFI_SHIM_LOCK_HASH Hash;
 	EFI_SHIM_LOCK_CONTEXT Context;
+	EFI_SHIM_LOCK_MEASURE Measure;
 } SHIM_LOCK;
 
 extern EFI_STATUS shim_init(void);
