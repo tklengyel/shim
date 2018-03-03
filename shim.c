@@ -1310,7 +1310,7 @@ static EFI_STATUS handle_image (void *data, unsigned int datasize,
 		return efi_status;
 
 	/* Measure the binary into the TPM */
-	efi_status = tpm_log_pe((EFI_PHYSICAL_ADDRESS)(UINTN)data, datasize, sha1hash, 4);
+	efi_status = tpm_log_pe((EFI_PHYSICAL_ADDRESS)(UINTN)data, datasize, NULL, 4);
 #ifdef REQUIRE_TPM
 	if (efi_status != EFI_SUCCESS) {
 		return efi_status;
@@ -1831,7 +1831,7 @@ EFI_STATUS shim_verify (void *buffer, UINT32 size)
 		goto done;
 
 	/* Measure the binary into the TPM */
-	status = tpm_log_pe((EFI_PHYSICAL_ADDRESS)(UINTN)buffer, size, sha1hash, 4);
+	status = tpm_log_pe((EFI_PHYSICAL_ADDRESS)(UINTN)buffer, size, NULL, 4);
 #ifdef REQUIRE_TPM
 	if (status != EFI_SUCCESS)
 		goto done;
